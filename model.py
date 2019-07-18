@@ -4,6 +4,9 @@ Created on Wed Jul 10 10:30:03 2019
 
 @author: nrdas
 """
+#Code without Keras
+
+
 import numpy as np
 import tensorflow as tf
 import os
@@ -72,20 +75,8 @@ class Net(tf.keras.Model):
                     activation=tf.sigmoid,
                     kernel_initializer=tf.contrib.layers.xavier_initializer())
         
-        '''
-            self.layer1 = tf.keras.layers.Dense(
-                    hidden_shape,
-                    activation=func,
-                    kernel_initializer=tf.contrib.layers.xavier_initializer())
-            
-            self.layer2 = tf.keras.layers.Dense(
-                    hidden_shape,
-                    activation=func,
-                    kernel_initializer=tf.contrib.layers.xavier_initializer())
-            
-            self.aprob = tf.keras.layers.Dense(5, activation=tf.nn.sigmoid)
 
-        '''
+        
         self.loss = tf.losses.log_loss(
             labels=self.sampled_actions,
             predictions=self.aprob,
@@ -111,6 +102,7 @@ class Net(tf.keras.Model):
         self.saver.save(self.sess, self.checkpoint_file)
 
     def forward_pass(self, observations):
+        
         up_probability = self.sess.run(
             self.aprob,
             feed_dict={self.input_layer: observations.reshape([1, -1])})
@@ -138,3 +130,4 @@ if __name__ == '__main__':
     path = 'C:\\Users\\nrdas\\Downloads\\SADE_AI\\TFRL\\checks'
     model1 = Net((80,80), False, None, 200, 'tanh', 0.005, path)
 '''            
+            
