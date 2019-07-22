@@ -1,7 +1,8 @@
 import numpy as np
 import gym
 
-from model import Net
+#change according to interest. 
+from keras_model import Net
 
 
 UP_ACTION = 2
@@ -19,7 +20,7 @@ D = (80, 80)
 resume = False
 
 #make network
-network = Net(D, False, (3,3), H, 'tanh', learning_rate, path)
+network = Net(D, H, 'tanh', learning_rate, path)
 
 if resume:
     network.load_checkpoint()    
