@@ -101,12 +101,9 @@ class Net(tf.keras.Model):
         tf.keras.experimental.export_saved_model(self.neural_network, self.checkpoint_file)
 
     def forward_pass(self, observations): 
-        #x = self.layer1(observations.reshape([1, -1]))
-        #return self.aprob(x)
-        up_probability = self.sess.run(
-            self.aprob,
-            feed_dict={self.input_layer: observations.reshape([1, -1])})
-        return up_probability
+        inp = observations.reshape([1, -1])
+        out = self.neural_network.predict(inp)
+        return out
         
     def train(self, batch_tup):
         print("Training")
@@ -126,11 +123,10 @@ class Net(tf.keras.Model):
         
         #run the graph
         self.sess.run(self.trainer, feed_dict)
-
-
+'''
 if __name__ == '__main__':
     path = 'C:\\Users\\nrdas\\Downloads\\SADE_AI\\TFRL\\checks'
     model1 = Net((80,80), 200, 'tanh', 0.005, path)
 
-            
+'''           
             
