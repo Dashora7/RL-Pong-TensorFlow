@@ -11,7 +11,7 @@ Created on Wed Jul 10 10:30:03 2019
 import numpy as np
 import tensorflow as tf
 import os
-
+#from keras.models import load_model
 
 #create a class for building a model.
 class Net(tf.keras.Model):
@@ -52,8 +52,7 @@ class Net(tf.keras.Model):
         #make the first layer
         self.layer1 = tf.keras.layers.Dense(
                 hidden_shape,
-                activation=func,
-                kernel_initializer=tf.contrib.layers.xavier_initializer())
+                activation=func)
         
         #pass  input placeholder through the first layer object
         x = self.layer1(self.input_layer)
@@ -62,14 +61,14 @@ class Net(tf.keras.Model):
         #Make output layer
         self.aprob = tf.keras.layers.Dense(
                 1, 
-                activation=tf.nn.sigmoid,
-                kernel_initializer=tf.contrib.layers.xavier_initializer())
+                activation=tf.nn.sigmoid)
         
         #pass intermediate state into output layer to get output
         output = self.aprob(x)
         
         #Match input and output to declare a functioning Keras model.
         self.neural_network = tf.keras.Model(inputs=self.input_layer, outputs=output)
+        
         
         #Make a loss with the placeholders and outputs
         self.loss = tf.losses.log_loss(
@@ -89,16 +88,16 @@ class Net(tf.keras.Model):
         
         #Set the checkpoint file name
         self.checkpoint_file = os.path.join(ckpt_dir,
-                                            'policy_network.ckpt')
+                                            'policy_network.h5')
         
             
     def load_checkpoint(self):
         print("Loading checkpoint...")
-        tf.keras.experimental.export_saved_model(self.neural_network, self.checkpoint_file)
-
+        self.neural_network = tf.keras.models.load_model(self.checkpoint_file, compile=False)
+        
     def save_checkpoint(self):
         print("Saving checkpoint...")
-        tf.keras.experimental.export_saved_model(self.neural_network, self.checkpoint_file)
+        self.neural_network.save(self.checkpoint_file, overwrite=True)
 
     def forward_pass(self, observations): 
         inp = observations.reshape([1, -1])
@@ -127,6 +126,5 @@ class Net(tf.keras.Model):
 if __name__ == '__main__':
     path = 'C:\\Users\\nrdas\\Downloads\\SADE_AI\\TFRL\\checks'
     model1 = Net((80,80), 200, 'tanh', 0.005, path)
-
-'''           
+'''    
             
