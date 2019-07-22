@@ -1,7 +1,6 @@
 import numpy as np
 import gym
 
-#change according to interest. 
 from keras_model import Net
 
 
@@ -17,6 +16,8 @@ decay = 0.99
 H = 200
 learning_rate = 0.005
 D = (80, 80)
+
+#If you are resuming
 resume = False
 
 #make network
@@ -115,7 +116,7 @@ while True:
         network.train(batch_tup)
         batch_tup = []
 
-    if episode_n % 250 == 0:
+    if episode_n % 100 == 0:
         network.save_checkpoint()
 
     episode_n += 1
