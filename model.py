@@ -124,6 +124,9 @@ class Net(tf.keras.Model):
         }
         
         self.sess.run(self.trainer, feed_dict)
+        
+    def closeSess():
+        sess.close()
 
 '''
 if __name__ == '__main__':

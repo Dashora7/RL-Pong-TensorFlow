@@ -120,3 +120,5 @@ while True:
         network.save_checkpoint()
 
     episode_n += 1
+
+network.closeSess()

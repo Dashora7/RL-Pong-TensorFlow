@@ -122,6 +122,10 @@ class Net(tf.keras.Model):
         
         #run the graph
         self.sess.run(self.trainer, feed_dict)
+        
+    def closeSess(self):
+        sess.close()
+        
 '''
 if __name__ == '__main__':
     path = 'C:\\Users\\nrdas\\Downloads\\SADE_AI\\TFRL\\checks'
