@@ -17,8 +17,8 @@ H = 200
 learning_rate = 0.005
 D = (80, 80)
 
-#If you are resuming
-resume = False
+#prompt if you want to load/resumt
+resume = False if (input("Do you want to load from previous checkpoint? (y/n): ").lower() == "n") else True
 
 #make network
 network = Net(D, H, 'tanh', learning_rate, path)
@@ -53,7 +53,7 @@ env = gym.make('Pong-v0')
 
 batch_tup = []
 running_reward = None
-episode_n = 1
+episode_n = 99
 
 while True:
     print("Episode %d" % episode_n)
