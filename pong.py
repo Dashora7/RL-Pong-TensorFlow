@@ -53,7 +53,7 @@ env = gym.make('Pong-v0')
 
 batch_tup = []
 running_reward = None
-episode_n = 99
+episode_n = 1
 
 while True:
     print("Episode %d" % episode_n)
