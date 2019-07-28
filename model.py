@@ -4,36 +4,27 @@ Created on Wed Jul 10 10:30:03 2019
 
 @author: nrdas
 """
-#Code without Keras
-
-
 import numpy as np
 import tensorflow as tf
 import os
 
-class Net(tf.keras.Model):
-    def __init__(self, input_dimensions, use_conv, conv_shape, hidden_shape, activation, learning_rate, ckpt_dir):
+class Net():
+    def __init__(self, input_dimensions, hidden_shape, activation, learning_rate, ckpt_dir):
         '''
         input_dimensions: a tuple containg the 2D dimensions of the input (height, width).
-        use_conv: boolean whether to use convolutional layerrs or not
-        conv_shape: tuple for the shape of the convolutional kernel.
         hidden_shape: an int for the size of the hidden layer.
         activation: the activation function desired for the hidden layers. leaky_relu, relu, or tanh.
         learning rate: the LR desired for the network.
         ckpt_dir: string location of directory to store model checkpoints.
         '''
-        super(Net, self).__init__()
-
+        
         self.sess = tf.InteractiveSession()
         
         self.learning_rate = learning_rate
         
         flattened_size = input_dimensions[0] * input_dimensions[1]
         
-        if use_conv:
-            self.input_layer =  tf.placeholder(tf.float32, [1, input_dimensions[0], input_dimensions[1], 1])
-        else:
-            self.input_layer =  tf.placeholder(tf.float32, [None, flattened_size])
+        self.input_layer =  tf.placeholder(tf.float32, [None, flattened_size])
         
         self.sampled_actions = tf.placeholder(tf.float32, [None, 1])
         
@@ -47,33 +38,18 @@ class Net(tf.keras.Model):
         else:
             func = tf.nn.leaky_relu
         
-        if use_conv:
             
-            convolution = tf.layers.conv2d(self.input_layer,
-                                           filters=64,
-                                           kernel_size=3,
-                                           activation=func,
-                                           padding='same')
-            hidden = tf.layers.dense(convolution,
-                                     units=hidden_shape,
-                                     activation=func,
-                                     kernel_initializer=tf.contrib.layers.xavier_initializer())
-            self.aprob = tf.layers.dense(hidden,
-                                         units=1,
-                                         activation=tf.sigmoid,
-                                         kernel_initializer=tf.contrib.layers.xavier_initializer())
-            
-        else:
-            
-            hidden = tf.layers.dense(self.input_layer,
-                                     units=hidden_shape,
-                                     activation=func,
-                                     kernel_initializer=tf.contrib.layers.xavier_initializer())
-            self.aprob = tf.layers.dense(
-                    hidden,
-                    units=1,
-                    activation=tf.sigmoid,
-                    kernel_initializer=tf.contrib.layers.xavier_initializer())
+        hidden = tf.layers.dense(
+                self.input_layer,
+                units=hidden_shape,
+                activation=func,
+                kernel_initializer=tf.contrib.layers.xavier_initializer())
+        
+        self.aprob = tf.layers.dense(
+                hidden,
+                units=1,
+                activation=tf.sigmoid,
+                kernel_initializer=tf.contrib.layers.xavier_initializer())
         
 
         
@@ -124,13 +100,9 @@ class Net(tf.keras.Model):
         }
         
         self.sess.run(self.trainer, feed_dict)
-        
-    def closeSess(self):
-        self.sess.close()
 
 '''
 if __name__ == '__main__':
     path = 'C:\\Users\\nrdas\\Downloads\\SADE_AI\\TFRL\\checks'
-    model1 = Net((80,80), False, None, 200, 'tanh', 0.005, path)
-'''            
-            
+    model1 = Net((80,80), 200, 'tanh', 0.005, path)
+'''
